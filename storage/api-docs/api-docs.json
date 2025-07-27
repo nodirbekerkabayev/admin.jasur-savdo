@@ -157,6 +157,592 @@
                     }
                 ]
             }
+        },
+        "/api/clients": {
+            "get": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Get list of clients",
+                "description": "Retrieve a list of clients with optional search and filter",
+                "operationId": "d00d20521584ab5da83e088abb7aded2",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Search clients by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "description": "Search clients by phone number",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_deleted",
+                        "in": "query",
+                        "description": "Filter clients by deletion status (true/false)",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "John Doe"
+                                            },
+                                            "info": {
+                                                "type": "string",
+                                                "example": "Client information"
+                                            },
+                                            "phone": {
+                                                "type": "string",
+                                                "example": "+998901234567"
+                                            },
+                                            "image": {
+                                                "type": "string",
+                                                "example": "null",
+                                                "nullable": true
+                                            },
+                                            "debt": {
+                                                "type": "string",
+                                                "example": "100.00"
+                                            },
+                                            "recorded_by": {
+                                                "type": "string",
+                                                "example": "Admin"
+                                            },
+                                            "is_deleted": {
+                                                "type": "boolean",
+                                                "example": false
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Create a new client",
+                "description": "Store a new client in the database",
+                "operationId": "f1e86e5b79fedfa6593067977292b13b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "info",
+                                    "phone",
+                                    "debt",
+                                    "recorded_by"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "info": {
+                                        "type": "string",
+                                        "example": "Client information"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "+998901234567"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "example": "null",
+                                        "nullable": true
+                                    },
+                                    "debt": {
+                                        "type": "string",
+                                        "example": "100.00"
+                                    },
+                                    "recorded_by": {
+                                        "type": "string",
+                                        "example": "Admin"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Client created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "client": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "info": {
+                                                    "type": "string",
+                                                    "example": "Client information"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "+998901234567"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "null",
+                                                    "nullable": true
+                                                },
+                                                "debt": {
+                                                    "type": "string",
+                                                    "example": "100.00"
+                                                },
+                                                "recorded_by": {
+                                                    "type": "string",
+                                                    "example": "Admin"
+                                                },
+                                                "is_deleted": {
+                                                    "type": "boolean",
+                                                    "example": false
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/clients/{id}": {
+            "get": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Get a specific client",
+                "description": "Retrieve a client by ID",
+                "operationId": "4c3c7071ea1133f04bacdbc70f8aa230",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Client ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "info": {
+                                            "type": "string",
+                                            "example": "Client information"
+                                        },
+                                        "phone": {
+                                            "type": "string",
+                                            "example": "+998901234567"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "example": "null",
+                                            "nullable": true
+                                        },
+                                        "debt": {
+                                            "type": "string",
+                                            "example": "100.00"
+                                        },
+                                        "recorded_by": {
+                                            "type": "string",
+                                            "example": "Admin"
+                                        },
+                                        "is_deleted": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Client not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Update a client",
+                "description": "Update client details by ID",
+                "operationId": "7d0a5ae9e306858d30e04fc50265d80c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Client ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "info",
+                                    "phone",
+                                    "debt",
+                                    "recorded_by"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "info": {
+                                        "type": "string",
+                                        "example": "Updated client info"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "+998901234567"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "example": "null",
+                                        "nullable": true
+                                    },
+                                    "debt": {
+                                        "type": "string",
+                                        "example": "200.00"
+                                    },
+                                    "recorded_by": {
+                                        "type": "string",
+                                        "example": "Admin"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Client updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "client": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "info": {
+                                                    "type": "string",
+                                                    "example": "Updated client info"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "+998901234567"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "null",
+                                                    "nullable": true
+                                                },
+                                                "debt": {
+                                                    "type": "string",
+                                                    "example": "200.00"
+                                                },
+                                                "recorded_by": {
+                                                    "type": "string",
+                                                    "example": "Admin"
+                                                },
+                                                "is_deleted": {
+                                                    "type": "boolean",
+                                                    "example": false
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Client not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Soft delete a client",
+                "description": "Mark a client as deleted by setting is_deleted to true",
+                "operationId": "c929f14f421a80a896c6fe116ffdc317",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Client ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Client marked as deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Client marked as deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Client not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -172,6 +758,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Clients",
+            "description": "Clients"
         }
     ]
 }
