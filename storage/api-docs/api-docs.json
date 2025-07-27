@@ -27,12 +27,12 @@
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "user@example.com"
+                                        "example": "admin"
                                     },
                                     "password": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "password123"
+                                        "example": "1234"
                                     }
                                 },
                                 "type": "object"
@@ -163,8 +163,8 @@
                 "tags": [
                     "Clients"
                 ],
-                "summary": "Get list of clients",
-                "description": "Retrieve a list of clients with optional search and filter",
+                "summary": "Get paginated list of clients",
+                "description": "Retrieve a paginated list of clients with optional search and filter",
                 "operationId": "d00d20521584ab5da83e088abb7aded2",
                 "parameters": [
                     {
@@ -194,6 +194,26 @@
                             "type": "boolean",
                             "default": false
                         }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
                     }
                 ],
                 "responses": {
@@ -202,53 +222,74 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "name": {
-                                                "type": "string",
-                                                "example": "John Doe"
-                                            },
-                                            "info": {
-                                                "type": "string",
-                                                "example": "Client information"
-                                            },
-                                            "phone": {
-                                                "type": "string",
-                                                "example": "+998901234567"
-                                            },
-                                            "image": {
-                                                "type": "string",
-                                                "example": "null",
-                                                "nullable": true
-                                            },
-                                            "debt": {
-                                                "type": "string",
-                                                "example": "100.00"
-                                            },
-                                            "recorded_by": {
-                                                "type": "string",
-                                                "example": "Admin"
-                                            },
-                                            "is_deleted": {
-                                                "type": "boolean",
-                                                "example": false
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time"
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "John Doe"
+                                                    },
+                                                    "info": {
+                                                        "type": "string",
+                                                        "example": "Client information"
+                                                    },
+                                                    "phone": {
+                                                        "type": "string",
+                                                        "example": "+998901234567"
+                                                    },
+                                                    "image": {
+                                                        "type": "string",
+                                                        "example": "null",
+                                                        "nullable": true
+                                                    },
+                                                    "debt": {
+                                                        "type": "string",
+                                                        "example": "100.00"
+                                                    },
+                                                    "recorded_by": {
+                                                        "type": "string",
+                                                        "example": "Admin"
+                                                    },
+                                                    "is_deleted": {
+                                                        "type": "boolean",
+                                                        "example": false
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
                                             }
                                         },
-                                        "type": "object"
-                                    }
+                                        "current_page": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "per_page": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "total": {
+                                            "type": "integer",
+                                            "example": 100
+                                        },
+                                        "last_page": {
+                                            "type": "integer",
+                                            "example": 10
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -284,8 +325,8 @@
                 "tags": [
                     "Clients"
                 ],
-                "summary": "Create a new client",
-                "description": "Store a new client in the database",
+                "summary": "Create a new client with initial debt",
+                "description": "Store a new client and their initial debt in the database",
                 "operationId": "f1e86e5b79fedfa6593067977292b13b",
                 "requestBody": {
                     "required": true,
@@ -302,7 +343,7 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "John Doe"
+                                        "example": "Ali"
                                     },
                                     "info": {
                                         "type": "string",
@@ -319,7 +360,7 @@
                                     },
                                     "debt": {
                                         "type": "string",
-                                        "example": "100.00"
+                                        "example": "100000"
                                     },
                                     "recorded_by": {
                                         "type": "string",
@@ -350,7 +391,7 @@
                                                 },
                                                 "name": {
                                                     "type": "string",
-                                                    "example": "John Doe"
+                                                    "example": "Ali"
                                                 },
                                                 "info": {
                                                     "type": "string",
@@ -367,7 +408,7 @@
                                                 },
                                                 "debt": {
                                                     "type": "string",
-                                                    "example": "100.00"
+                                                    "example": "100000"
                                                 },
                                                 "recorded_by": {
                                                     "type": "string",
@@ -430,8 +471,8 @@
                 "tags": [
                     "Clients"
                 ],
-                "summary": "Get a specific client",
-                "description": "Retrieve a client by ID",
+                "summary": "Get a specific client with debt history",
+                "description": "Retrieve a client's details and their debt history by ID",
                 "operationId": "4c3c7071ea1133f04bacdbc70f8aa230",
                 "parameters": [
                     {
@@ -451,46 +492,91 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
+                                        "client": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Ali"
+                                                },
+                                                "info": {
+                                                    "type": "string",
+                                                    "example": "Do'kon mijoz"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "+998901234567"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "null",
+                                                    "nullable": true
+                                                },
+                                                "debt": {
+                                                    "type": "string",
+                                                    "example": "70000"
+                                                },
+                                                "recorded_by": {
+                                                    "type": "string",
+                                                    "example": "Admin"
+                                                },
+                                                "is_deleted": {
+                                                    "type": "boolean",
+                                                    "example": false
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
                                         },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "John Doe"
-                                        },
-                                        "info": {
-                                            "type": "string",
-                                            "example": "Client information"
-                                        },
-                                        "phone": {
-                                            "type": "string",
-                                            "example": "+998901234567"
-                                        },
-                                        "image": {
-                                            "type": "string",
-                                            "example": "null",
-                                            "nullable": true
-                                        },
-                                        "debt": {
-                                            "type": "string",
-                                            "example": "100.00"
-                                        },
-                                        "recorded_by": {
-                                            "type": "string",
-                                            "example": "Admin"
-                                        },
-                                        "is_deleted": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time"
+                                        "debts": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "client_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "amount": {
+                                                        "type": "string",
+                                                        "example": "100000"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "oldi"
+                                                    },
+                                                    "recorded_by": {
+                                                        "type": "string",
+                                                        "example": "Admin"
+                                                    },
+                                                    "is_deleted": {
+                                                        "type": "boolean",
+                                                        "example": false
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
                                         }
                                     },
                                     "type": "object"
@@ -529,8 +615,8 @@
                 "tags": [
                     "Clients"
                 ],
-                "summary": "Update a client",
-                "description": "Update client details by ID",
+                "summary": "Update client details",
+                "description": "Update a client's details by ID",
                 "operationId": "7d0a5ae9e306858d30e04fc50265d80c",
                 "parameters": [
                     {
@@ -548,17 +634,10 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "name",
-                                    "info",
-                                    "phone",
-                                    "debt",
-                                    "recorded_by"
-                                ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "John Doe"
+                                        "example": "Ali"
                                     },
                                     "info": {
                                         "type": "string",
@@ -572,10 +651,6 @@
                                         "type": "string",
                                         "example": "null",
                                         "nullable": true
-                                    },
-                                    "debt": {
-                                        "type": "string",
-                                        "example": "200.00"
                                     },
                                     "recorded_by": {
                                         "type": "string",
@@ -606,7 +681,7 @@
                                                 },
                                                 "name": {
                                                     "type": "string",
-                                                    "example": "John Doe"
+                                                    "example": "Ali"
                                                 },
                                                 "info": {
                                                     "type": "string",
@@ -623,7 +698,7 @@
                                                 },
                                                 "debt": {
                                                     "type": "string",
-                                                    "example": "200.00"
+                                                    "example": "70000"
                                                 },
                                                 "recorded_by": {
                                                     "type": "string",
@@ -729,6 +804,163 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Client not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/clients/{id}/change-debt": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Add a debt transaction",
+                "description": "Add a new debt or payment transaction for a client",
+                "operationId": "abb17f09ea33c059d193be732048ad70",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Client ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "amount",
+                                    "status",
+                                    "recorded_by"
+                                ],
+                                "properties": {
+                                    "amount": {
+                                        "type": "string",
+                                        "example": "50000"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "oldi",
+                                            "berdi"
+                                        ],
+                                        "example": "berdi"
+                                    },
+                                    "recorded_by": {
+                                        "type": "string",
+                                        "example": "Admin"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Debt transaction added successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "debt": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "client_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "amount": {
+                                                    "type": "string",
+                                                    "example": "50000"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "berdi"
+                                                },
+                                                "recorded_by": {
+                                                    "type": "string",
+                                                    "example": "Admin"
+                                                },
+                                                "is_deleted": {
+                                                    "type": "boolean",
+                                                    "example": false
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Client not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        },
+                                        "errors": {
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"

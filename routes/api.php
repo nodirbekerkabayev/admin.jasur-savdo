@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\ClientController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +24,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/clients/{id}', [ClientController::class, 'show']);
     Route::put('/clients/{id}', [ClientController::class, 'update']);
     Route::delete('/clients/{id}', [ClientController::class, 'destroy']);
+    Route::post('/clients/{id}/change-debt', [ClientController::class, 'changeDebt']);
 });
