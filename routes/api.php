@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FirmController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\WorkerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +53,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/products/{id}', [ProductsController::class, 'show']);
     Route::put('/products/{id}', [ProductsController::class, 'update']);
     Route::delete('/products/{id}', [ProductsController::class, 'destroy']);
+
+    // Worker Routes
+    Route::get('/workers', [WorkerController::class, 'index']);
+    Route::post('/workers', [WorkerController::class, 'store']);
+    Route::get('/workers/{id}', [WorkerController::class, 'show']);
+    Route::post('/workers/{id}', [WorkerController::class, 'update']);
+    Route::delete('/workers/{id}', [WorkerController::class, 'destroy']);
+    Route::post('/workers/{id}/pays', [WorkerController::class, 'changePay']);
 });
