@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('firm_id')->constrained()->cascadeOnDelete();
-            $table->date('date');
+            $table->date('day');
             $table->string('recorded_by')->nullable();
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();

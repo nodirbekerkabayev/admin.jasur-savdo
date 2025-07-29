@@ -521,7 +521,7 @@ class FirmController extends Controller
 
         $firmDebt = FirmDebt::create([
             'firm_id' => $firm->id,
-            'debt' => $validated['debt'],
+            'amount' => $validated['debt'],
             'status' => $validated['status'],
             'recorded_by' => $validated['recorded_by'],
         ]);
