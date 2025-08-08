@@ -10,7 +10,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('workers:update-summa')
-            ->dailyAt('17:00')
+            ->dailyAt('11:00')
             ->timezone('Asia/Tashkent');
     }
 

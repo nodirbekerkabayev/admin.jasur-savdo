@@ -3305,7 +3305,7 @@
                                             },
                                             "amount": {
                                                 "type": "integer",
-                                                "example": 50000
+                                                "example": 100000
                                             },
                                             "day": {
                                                 "type": "string",
@@ -3323,7 +3323,7 @@
                                             },
                                             "summa": {
                                                 "type": "integer",
-                                                "example": 1450000
+                                                "example": 1900000
                                             },
                                             "created_at": {
                                                 "type": "string",
@@ -3396,7 +3396,7 @@
                                     },
                                     "amount": {
                                         "type": "integer",
-                                        "example": 50000
+                                        "example": 100000
                                     },
                                     "day": {
                                         "type": "string",
@@ -3440,7 +3440,7 @@
                                                 },
                                                 "amount": {
                                                     "type": "integer",
-                                                    "example": 50000
+                                                    "example": 100000
                                                 },
                                                 "day": {
                                                     "type": "string",
@@ -3550,7 +3550,7 @@
                                                 },
                                                 "amount": {
                                                     "type": "integer",
-                                                    "example": 50000
+                                                    "example": 100000
                                                 },
                                                 "day": {
                                                     "type": "string",
@@ -3568,7 +3568,7 @@
                                                 },
                                                 "summa": {
                                                     "type": "integer",
-                                                    "example": 1450000
+                                                    "example": 1900000
                                                 },
                                                 "created_at": {
                                                     "type": "string",
@@ -3595,7 +3595,7 @@
                                                     },
                                                     "amount": {
                                                         "type": "integer",
-                                                        "example": 1000000
+                                                        "example": 500000
                                                     },
                                                     "status": {
                                                         "type": "string",
@@ -3680,7 +3680,7 @@
                                     },
                                     "amount": {
                                         "type": "integer",
-                                        "example": 50000
+                                        "example": 100000
                                     },
                                     "day": {
                                         "type": "string",
@@ -3728,7 +3728,7 @@
                                                 },
                                                 "amount": {
                                                     "type": "integer",
-                                                    "example": 50000
+                                                    "example": 100000
                                                 },
                                                 "day": {
                                                     "type": "string",
@@ -3746,7 +3746,7 @@
                                                 },
                                                 "summa": {
                                                     "type": "integer",
-                                                    "example": 1450000
+                                                    "example": 1900000
                                                 },
                                                 "created_at": {
                                                     "type": "string",
@@ -3913,7 +3913,7 @@
                                 "properties": {
                                     "amount": {
                                         "type": "integer",
-                                        "example": 1000000
+                                        "example": 500000
                                     },
                                     "status": {
                                         "type": "string",
@@ -3952,7 +3952,7 @@
                                                 },
                                                 "amount": {
                                                     "type": "integer",
-                                                    "example": 1000000
+                                                    "example": 500000
                                                 },
                                                 "status": {
                                                     "type": "string",
@@ -3977,7 +3977,7 @@
                                                 },
                                                 "summa": {
                                                     "type": "integer",
-                                                    "example": 450000
+                                                    "example": 1400000
                                                 }
                                             },
                                             "type": "object"

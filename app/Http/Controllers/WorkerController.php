@@ -6,6 +6,7 @@ use App\Models\Worker;
 use App\Models\WorkerPay;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
@@ -17,6 +18,19 @@ use Carbon\Carbon;
  */
 class WorkerController extends Controller
 {
+    /**
+     * Calculate summa dynamically based on current time
+     */
+    private function calculateSumma(Worker $worker): int
+    {
+        $startDate = Carbon::parse($worker->day);
+        $today = Carbon::today('Asia/Tashkent');
+        $now = Carbon::now('Asia/Tashkent');
+        $isAfter11AM = $now->hour >= 11;
+        $daysWorked = $startDate->diffInDays($today) + ($isAfter11AM ? 1 : 0);
+        return $daysWorked * $worker->amount;
+    }
+
     /**
      * @OA\Get(
      *     path="/api/workers",
@@ -40,11 +54,11 @@ class WorkerController extends Controller
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Ali"),
      *                 @OA\Property(property="phone", type="string", example="+998901234567"),
-     *                 @OA\Property(property="amount", type="integer", example=50000),
+     *                 @OA\Property(property="amount", type="integer", example=100000),
      *                 @OA\Property(property="day", type="string", format="date", example="2025-07-01"),
      *                 @OA\Property(property="status", type="string", example="ishlayabdi"),
      *                 @OA\Property(property="image", type="string", nullable=true, example="workers/ali.jpg"),
-     *                 @OA\Property(property="summa", type="integer", example=1450000),
+     *                 @OA\Property(property="summa", type="integer", example=1900000),
      *                 @OA\Property(property="created_at", type="string", format="date-time"),
      *                 @OA\Property(property="updated_at", type="string", format="date-time")
      *             )
@@ -68,7 +82,13 @@ class WorkerController extends Controller
             $query->where('name', 'like', '%' . $request->input('name') . '%');
         }
 
-        $workers = $query->get();
+        $workers = $query->get()->map(function ($worker) {
+            if ($worker->status === 'ishlayabdi') {
+                $worker->summa = $this->calculateSumma($worker);
+                $worker->save();
+            }
+            return $worker;
+        });
 
         return response()->json($workers, 200);
     }
@@ -88,7 +108,7 @@ class WorkerController extends Controller
      *                 required={"name", "phone", "amount", "day"},
      *                 @OA\Property(property="name", type="string", example="Ali"),
      *                 @OA\Property(property="phone", type="string", example="+998901234567"),
-     *                 @OA\Property(property="amount", type="integer", example=50000),
+     *                 @OA\Property(property="amount", type="integer", example=100000),
      *                 @OA\Property(property="day", type="string", format="date", example="2025-07-01"),
      *                 @OA\Property(property="image", type="file", description="Worker image")
      *             )
@@ -105,7 +125,7 @@ class WorkerController extends Controller
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Ali"),
      *                 @OA\Property(property="phone", type="string", example="+998901234567"),
-     *                 @OA\Property(property="amount", type="integer", example=50000),
+     *                 @OA\Property(property="amount", type="integer", example=100000),
      *                 @OA\Property(property="day", type="string", format="date", example="2025-07-01"),
      *                 @OA\Property(property="status", type="string", example="ishlayabdi"),
      *                 @OA\Property(property="image", type="string", nullable=true, example="workers/ali.jpg"),
@@ -131,7 +151,7 @@ class WorkerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
-            'amount' => 'required|integer|min:0',
+            'amount' => 'required|integer|min:0|divisible_by:100',
             'day' => 'required|date',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -176,11 +196,11 @@ class WorkerController extends Controller
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Ali"),
      *                 @OA\Property(property="phone", type="string", example="+998901234567"),
-     *                 @OA\Property(property="amount", type="integer", example=50000),
+     *                 @OA\Property(property="amount", type="integer", example=100000),
      *                 @OA\Property(property="day", type="string", format="date", example="2025-07-01"),
      *                 @OA\Property(property="status", type="string", example="ishlayabdi"),
      *                 @OA\Property(property="image", type="string", nullable=true, example="workers/ali.jpg"),
-     *                 @OA\Property(property="summa", type="integer", example=1450000),
+     *                 @OA\Property(property="summa", type="integer", example=1900000),
      *                 @OA\Property(property="created_at", type="string", format="date-time"),
      *                 @OA\Property(property="updated_at", type="string", format="date-time")
      *             ),
@@ -190,7 +210,7 @@ class WorkerController extends Controller
      *                 @OA\Items(
      *                     @OA\Property(property="id", type="integer", example=1),
      *                     @OA\Property(property="worker_id", type="integer", example=1),
-     *                     @OA\Property(property="amount", type="integer", example=1000000),
+     *                     @OA\Property(property="amount", type="integer", example=500000),
      *                     @OA\Property(property="status", type="string", example="oldi"),
      *                     @OA\Property(property="created_at", type="string", format="date-time"),
      *                     @OA\Property(property="updated_at", type="string", format="date-time")
@@ -221,6 +241,11 @@ class WorkerController extends Controller
             ], 404);
         }
 
+        if ($worker->status === 'ishlayabdi') {
+            $worker->summa = $this->calculateSumma($worker);
+            $worker->save();
+        }
+
         return response()->json([
             'worker' => $worker,
             'pays' => $worker->pays,
@@ -248,7 +273,7 @@ class WorkerController extends Controller
      *             @OA\Schema(
      *                 @OA\Property(property="name", type="string", example="Ali"),
      *                 @OA\Property(property="phone", type="string", example="+998901234567"),
-     *                 @OA\Property(property="amount", type="integer", example=50000),
+     *                 @OA\Property(property="amount", type="integer", example=100000),
      *                 @OA\Property(property="day", type="string", format="date", example="2025-07-01"),
      *                 @OA\Property(property="status", type="string", example="ishlayabdi"),
      *                 @OA\Property(property="image", type="file", description="Worker image")
@@ -266,11 +291,11 @@ class WorkerController extends Controller
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Ali"),
      *                 @OA\Property(property="phone", type="string", example="+998901234567"),
-     *                 @OA\Property(property="amount", type="integer", example=50000),
+     *                 @OA\Property(property="amount", type="integer", example=100000),
      *                 @OA\Property(property="day", type="string", format="date", example="2025-07-01"),
      *                 @OA\Property(property="status", type="string", example="ishlayabdi"),
      *                 @OA\Property(property="image", type="string", nullable=true, example="workers/ali.jpg"),
-     *                 @OA\Property(property="summa", type="integer", example=1450000),
+     *                 @OA\Property(property="summa", type="integer", example=1900000),
      *                 @OA\Property(property="created_at", type="string", format="date-time"),
      *                 @OA\Property(property="updated_at", type="string", format="date-time")
      *             )
@@ -309,7 +334,7 @@ class WorkerController extends Controller
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
             'phone' => 'sometimes|string|max:255',
-            'amount' => 'sometimes|integer|min:0',
+            'amount' => 'sometimes|integer|min:0|divisible_by:100',
             'day' => 'sometimes|date',
             'status' => 'sometimes|string|in:ishlayabdi,ishlamayabdi',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -324,6 +349,11 @@ class WorkerController extends Controller
         }
 
         $worker->update($validated);
+
+        if ($worker->status === 'ishlayabdi') {
+            $worker->summa = $this->calculateSumma($worker);
+            $worker->save();
+        }
 
         return response()->json([
             'status' => 'success',
@@ -404,7 +434,7 @@ class WorkerController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"amount", "status"},
-     *             @OA\Property(property="amount", type="integer", example=1000000),
+     *             @OA\Property(property="amount", type="integer", example=500000),
      *             @OA\Property(property="status", type="string", example="oldi", enum={"oldi", "berdi"})
      *         )
      *     ),
@@ -418,7 +448,7 @@ class WorkerController extends Controller
      *                 type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="worker_id", type="integer", example=1),
-     *                 @OA\Property(property="amount", type="integer", example=1000000),
+     *                 @OA\Property(property="amount", type="integer", example=500000),
      *                 @OA\Property(property="status", type="string", example="oldi"),
      *                 @OA\Property(property="created_at", type="string", format="date-time"),
      *                 @OA\Property(property="updated_at", type="string", format="date-time")
@@ -427,7 +457,7 @@ class WorkerController extends Controller
      *                 property="worker",
      *                 type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="summa", type="integer", example=450000)
+     *                 @OA\Property(property="summa", type="integer", example=1400000)
      *             )
      *         )
      *     ),
@@ -473,6 +503,9 @@ class WorkerController extends Controller
         ]);
 
         // Update summa based on oldi/berdi
+        if ($worker->status === 'ishlayabdi') {
+            $worker->summa = $this->calculateSumma($worker);
+        }
         if ($validated['status'] === 'oldi') {
             $worker->summa -= $validated['amount'];
         } else {
