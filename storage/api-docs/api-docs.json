@@ -3263,6 +3263,970 @@
                 ]
             }
         },
+        "/api/optomchilar": {
+            "get": {
+                "tags": [
+                    "Optomchilar"
+                ],
+                "summary": "List all optomchilar with search",
+                "description": "Retrieve a list of optomchilar with sale_type 'optom' filtered by name",
+                "operationId": "c79ef0071edd1ca16656fb4a9d8db4b4",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Search term for optomchi name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Ali"
+                                            },
+                                            "phone": {
+                                                "type": "string",
+                                                "example": "+998901234567"
+                                            },
+                                            "address": {
+                                                "type": "string",
+                                                "example": "Tashkent"
+                                            },
+                                            "sale_type": {
+                                                "type": "string",
+                                                "example": "optom"
+                                            },
+                                            "created_by": {
+                                                "type": "string",
+                                                "example": "Hasan"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Optomchilar"
+                ],
+                "summary": "Create a new optomchi with products",
+                "description": "Create a new optomchi and its products (sale items) together",
+                "operationId": "ab478ec386ebee3af03b274def9ab246",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "phone",
+                                    "address",
+                                    "created_by",
+                                    "items"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Ali"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "+998901234567"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Tashkent"
+                                    },
+                                    "sale_type": {
+                                        "type": "string",
+                                        "example": "toychi"
+                                    },
+                                    "recorded_by": {
+                                        "type": "string",
+                                        "example": "Jasur"
+                                    },
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "product_id": {
+                                                    "type": "integer",
+                                                    "example": 1,
+                                                    "nullable": true
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Yangı meva",
+                                                    "nullable": true
+                                                },
+                                                "quantity": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "unit": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "dona",
+                                                        "blok"
+                                                    ],
+                                                    "example": "dona"
+                                                },
+                                                "price": {
+                                                    "type": "integer",
+                                                    "example": 5000
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Optomchi and products created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "optomchi": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Ali"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "+998901234567"
+                                                },
+                                                "address": {
+                                                    "type": "string",
+                                                    "example": "Tashkent"
+                                                },
+                                                "sale_type": {
+                                                    "type": "string",
+                                                    "example": "optom"
+                                                },
+                                                "created_by": {
+                                                    "type": "string",
+                                                    "example": "Hasan"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "sale": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "optomchi_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "total_sum": {
+                                                    "type": "integer",
+                                                    "example": 50000
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "sale_items": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "sale_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "product_id": {
+                                                        "type": "integer",
+                                                        "example": 1,
+                                                        "nullable": true
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Yangı meva",
+                                                        "nullable": true
+                                                    },
+                                                    "quantity": {
+                                                        "type": "integer",
+                                                        "example": 10
+                                                    },
+                                                    "unit": {
+                                                        "type": "string",
+                                                        "example": "dona"
+                                                    },
+                                                    "price": {
+                                                        "type": "integer",
+                                                        "example": 5000
+                                                    },
+                                                    "subtotal": {
+                                                        "type": "integer",
+                                                        "example": 50000
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/optomchilar/{id}": {
+            "get": {
+                "tags": [
+                    "Optomchilar"
+                ],
+                "summary": "Show an optomchi with sales and items",
+                "description": "Retrieve details of a specific optomchi including sales and sale items",
+                "operationId": "c1cc53fb3cc80e3bf1e524e648d3e42c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Optomchi ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Ali"
+                                        },
+                                        "phone": {
+                                            "type": "string",
+                                            "example": "+998901234567"
+                                        },
+                                        "address": {
+                                            "type": "string",
+                                            "example": "Tashkent"
+                                        },
+                                        "sale_type": {
+                                            "type": "string",
+                                            "example": "optom"
+                                        },
+                                        "created_by": {
+                                            "type": "string",
+                                            "example": "Hasan"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "sales": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "optomchi_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "total_sum": {
+                                                        "type": "integer",
+                                                        "example": 50000
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "sale_items": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "sale_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "product_id": {
+                                                        "type": "integer",
+                                                        "example": 1,
+                                                        "nullable": true
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Yangı meva",
+                                                        "nullable": true
+                                                    },
+                                                    "quantity": {
+                                                        "type": "integer",
+                                                        "example": 10
+                                                    },
+                                                    "unit": {
+                                                        "type": "string",
+                                                        "example": "dona"
+                                                    },
+                                                    "price": {
+                                                        "type": "integer",
+                                                        "example": 5000
+                                                    },
+                                                    "subtotal": {
+                                                        "type": "integer",
+                                                        "example": 50000
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Optomchi not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Optomchi not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Optomchilar"
+                ],
+                "summary": "Update an optomchi with sales and items",
+                "description": "Update an optomchi, its sales, and sale items together",
+                "operationId": "8cd1d4cac5955d265844e7f3380f9805",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Optomchi ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Ali Updated"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "+998901234568"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Tashkent Updated"
+                                    },
+                                    "sales": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "total_sum": {
+                                                    "type": "integer",
+                                                    "example": 60000
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "sale_items": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "quantity": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "unit": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "dona",
+                                                        "blok"
+                                                    ],
+                                                    "example": "dona"
+                                                },
+                                                "price": {
+                                                    "type": "integer",
+                                                    "example": 4000
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Optomchi, sales, and items updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "optomchi": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Ali Updated"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "+998901234568"
+                                                },
+                                                "address": {
+                                                    "type": "string",
+                                                    "example": "Tashkent Updated"
+                                                },
+                                                "sale_type": {
+                                                    "type": "string",
+                                                    "example": "optom"
+                                                },
+                                                "created_by": {
+                                                    "type": "string",
+                                                    "example": "Hasan"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "sales": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "optomchi_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "total_sum": {
+                                                        "type": "integer",
+                                                        "example": 60000
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "sale_items": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "sale_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "product_id": {
+                                                        "type": "integer",
+                                                        "example": 1,
+                                                        "nullable": true
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Yangı meva",
+                                                        "nullable": true
+                                                    },
+                                                    "quantity": {
+                                                        "type": "integer",
+                                                        "example": 15
+                                                    },
+                                                    "unit": {
+                                                        "type": "string",
+                                                        "example": "dona"
+                                                    },
+                                                    "price": {
+                                                        "type": "integer",
+                                                        "example": 4000
+                                                    },
+                                                    "subtotal": {
+                                                        "type": "integer",
+                                                        "example": 60000
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Optomchi not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Optomchi not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Optomchilar"
+                ],
+                "summary": "Delete an optomchi with all sales and items",
+                "description": "Delete an optomchi and all associated sales and sale items, or delete a specific sale item",
+                "operationId": "e4640e19d1371e4b0b41d4d2971ff26c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Optomchi ID or Sale Item ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Optomchi or sale item deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Optomchi and all data deleted or Sale item deleted"
+                                        },
+                                        "new_total_sum": {
+                                            "type": "integer",
+                                            "example": 0,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Optomchi or sale item not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Optomchi or sale item not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/getProducts": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Search products",
+                "description": "Retrieve a list of products based on search query",
+                "operationId": "360aedd0e219f2a8e6d000d39a0f51be",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Search term for product name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Olma"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/product-price/{productId}/{saleType}/{unit}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get product price based on sale type",
+                "description": "Retrieve price for a product based on sale type and unit",
+                "operationId": "ba65ee83b702cdb52372d56ac598c386",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "saleType",
+                        "in": "path",
+                        "description": "Sale type (optom or toychi)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "optom",
+                                "toychi"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "unit",
+                        "in": "path",
+                        "description": "Unit type (dona or blok)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "dona",
+                                "blok"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "price": {
+                                            "type": "integer",
+                                            "example": 5000
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/workers": {
             "get": {
                 "tags": [
@@ -4073,6 +5037,10 @@
         {
             "name": "Clients",
             "description": "Clients"
+        },
+        {
+            "name": "Optomchilar",
+            "description": "Optomchilar"
         }
     ]
 }

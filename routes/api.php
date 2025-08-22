@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
@@ -61,4 +62,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/workers/{id}', [WorkerController::class, 'update']);
     Route::delete('/workers/{id}', [WorkerController::class, 'destroy']);
     Route::post('/workers/{id}/pays', [WorkerController::class, 'changePay']);
+
+    Route::get('/optomchilar', [SaleController::class, 'indexOptomchilar']);
+    Route::post('/optomchilar', [SaleController::class, 'storeOptomchi']);
+    Route::get('/optomchilar/{id}', [SaleController::class, 'showOptomchi']);
+    Route::put('/optomchilar/{id}', [SaleController::class, 'updateOptomchi']);
+    Route::delete('/optomchilar/{id}', [SaleController::class, 'destroyOptomchi']);
+    Route::get('/getProducts', [SaleController::class, 'getProducts']);
+    Route::get('/product-price/{productId}/{saleType}/{unit}', [SaleController::class, 'getProductPrice']);
 });

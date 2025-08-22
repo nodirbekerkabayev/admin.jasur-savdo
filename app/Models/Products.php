@@ -25,4 +25,14 @@ class Products extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
+
+    public function saleItems()
+    {
+        return $this->hasMany(SaleItem::class);
+    }
 }
