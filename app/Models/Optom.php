@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Optom extends Model
 {
-    protected $fillable = ['name', 'phone', 'address', 'created_by'];
+    protected $fillable = ['name', 'phone', 'address', 'sale_type', 'created_by', 'recorded_by'];
 
     public function sales()
     {

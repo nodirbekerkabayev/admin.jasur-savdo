@@ -142,7 +142,7 @@ class SaleController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255|unique:optomchilar,phone',
+            'phone' => 'required|string|max:255|unique:optoms,phone',
             'address' => 'required|string|max:255',
             'sale_type' => 'required|string|max:255',
             'created_by' => 'required|string|max:255',
@@ -159,14 +159,15 @@ class SaleController extends Controller
             'name' => $validated['name'],
             'phone' => $validated['phone'],
             'address' => $validated['address'],
-            'sale_type' => 'optom',
+            'sale_type' => $validated['sale_type'],
             'created_by' => $validated['created_by'],
         ]);
 
         // Sale yaratish
         $totalSum = 0;
         $sale = Sale::create([
-            'optomchi_id' => $optomchi->id,
+            'optom_id' => $optomchi->id,
+            'created_by' => $validated['created_by'],
             'total_sum' => 0,
         ]);
 
@@ -176,9 +177,9 @@ class SaleController extends Controller
             $product = $item['product_id'] ? Products::find($item['product_id']) : null;
             $price = $item['price'];
             if ($product) {
-                $priceKey = 'optom' === 'optom'
-                    ? ($item['unit'] === 'dona' ? 'optom_dona_narxi' : 'optom_blok_narxi')
-                    : ($item['unit'] === 'dona' ? 'toychi_dona_narxi' : 'toychi_blok_narxi');
+                $priceKey = $validated['sale_type'] === 'optom'
+                    ? ($item['unit'] === 'dona' ? 'sotish_narxi_optom_dona' : 'sotish_narxi_optom_blok')
+                    : ($item['unit'] === 'dona' ? 'sotish_narxi_toyga_dona' : 'sotish_narxi_toyga_blok');
                 $price = $product->$priceKey;
             }
             $subtotal = $item['quantity'] * $price;
@@ -394,7 +395,7 @@ class SaleController extends Controller
 
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
-            'phone' => 'sometimes|required|string|max:255|unique:optomchilar,phone,' . $id,
+            'phone' => 'sometimes|required|string|max:255|unique:optoms,phone,' . $id,
             'address' => 'sometimes|required|string|max:255',
             'sales' => 'sometimes|array',
             'sales.*.id' => 'sometimes|required|exists:sales,id',
@@ -415,7 +416,7 @@ class SaleController extends Controller
         if (isset($validated['sales'])) {
             foreach ($validated['sales'] as $saleData) {
                 $sale = Sale::find($saleData['id']);
-                if ($sale && $sale->optomchi_id === $optomchi->id) {
+                if ($sale && $sale->optom_id === $optomchi->id) {
                     $sale->update(['total_sum' => $saleData['total_sum']]);
                 }
             }
@@ -424,13 +425,13 @@ class SaleController extends Controller
         if (isset($validated['sale_items'])) {
             foreach ($validated['sale_items'] as $itemData) {
                 $saleItem = SaleItem::find($itemData['id']);
-                if ($saleItem && $saleItem->sale->optomchi_id === $optomchi->id) {
+                if ($saleItem && $saleItem->sale->optom_id === $optomchi->id) {
                     $product = $saleItem->product_id ? Products::find($saleItem->product_id) : null;
                     $price = $itemData['price'] ?? $saleItem->price;
                     if ($product) {
-                        $priceKey = 'optom' === 'optom'
-                            ? ($itemData['unit'] === 'dona' ? 'optom_dona_narxi' : 'optom_blok_narxi')
-                            : ($itemData['unit'] === 'dona' ? 'toychi_dona_narxi' : 'toychi_blok_narxi');
+                        $priceKey = $optomchi->sale_type === 'optom'
+                            ? ($itemData['unit'] === 'dona' ? 'sotish_narxi_optom_dona' : 'sotish_narxi_optom_blok')
+                            : ($itemData['unit'] === 'dona' ? 'sotish_narxi_toyga_dona' : 'sotish_narxi_toyga_blok');
                         $price = $product->$priceKey;
                     }
                     $subtotal = ($itemData['quantity'] ?? $saleItem->quantity) * $price;
@@ -603,8 +604,8 @@ class SaleController extends Controller
         }
 
         $priceKey = $saleType === 'optom'
-            ? ($unit === 'dona' ? 'optom_dona_narxi' : 'optom_blok_narxi')
-            : ($unit === 'dona' ? 'toychi_dona_narxi' : 'toychi_blok_narxi');
+            ? ($unit === 'dona' ? 'sotish_narxi_optom_dona' : 'sotish_narxi_optom_blok')
+            : ($unit === 'dona' ? 'sotish_narxi_toyga_dona' : 'sotish_narxi_toyga_blok');
         $price = $product->$priceKey;
 
         return response()->json(['price' => $price]);

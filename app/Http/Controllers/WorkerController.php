@@ -151,7 +151,7 @@ class WorkerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
-            'amount' => 'required|integer|min:0|divisible_by:100',
+            'amount' => 'required|integer|min:0',
             'day' => 'required|date',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
